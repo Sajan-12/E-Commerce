@@ -6,7 +6,7 @@ const ProductList = () => {
    const[allProducts,setAllProducts]=useState([]);
 
    const fetchInfo=async()=>{
-    const resp=await fetch('http://localhost:4000/products');
+    const resp=await fetch('https://e-commerce-8waw.onrender.com/products');
     const data=await resp.json();
     setAllProducts(data.products);
       console.log(data);
@@ -17,7 +17,7 @@ const ProductList = () => {
    },[]);
 
    async function removeProduct(id){
-      await fetch(`http://localhost:4000/deleteproduct/${id}`,{
+      await fetch(`https://e-commerce-8waw.onrender.com/deleteproduct/${id}`,{
         method:'DELETE',
         headers:{
           Accept:'Application/json',
