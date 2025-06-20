@@ -15,6 +15,10 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(cors());
 
+app.use(cors({
+   origin: 'http://localhost:3000', // or your frontend URL
+   credentials: true // ⬅️ critical!
+}));
 //connect to mongodb
 mongoose.connect("mongodb+srv://sk9088075:070707@cluster1.w55zw.mongodb.net/path");
 

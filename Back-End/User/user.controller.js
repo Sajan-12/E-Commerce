@@ -43,7 +43,7 @@ const signIn=async(req,res)=>{
         userId:user._id,
     },'secret_ecom',{ expiresIn: '3h'});
       res.cookie('token', token, cookieoptions);
-    res.json({success:true,user:user});
+      res.json({success:true,token});
 
 }
 
