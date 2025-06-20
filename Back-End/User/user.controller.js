@@ -1,7 +1,6 @@
 const userModel=require("./user.schema.js");
 const bcrypt=require('bcryptjs');
 const jwt=require("jsonwebtoken");
-
 const signUp=async(req,res)=>{
 
     const {name,email,password}=req.body;
@@ -23,6 +22,12 @@ const signUp=async(req,res)=>{
      
 }
 
+const cookieoptions = {
+    httpOnly: true,
+    secure: false,
+    maxAge: 24*3600000 
+};
+
 const signIn=async(req,res)=>{
     const {email,password}=req.body;
     let user=await userModel.findOne({email});
@@ -37,8 +42,8 @@ const signIn=async(req,res)=>{
     const token=jwt.sign({
         userId:user._id,
     },'secret_ecom',{ expiresIn: '3h'});
-
-    res.json({success:true,token:token});
+      res.cookie('token', token, cookieoptions);
+    res.json({success:true,user:user});
 
 }
 

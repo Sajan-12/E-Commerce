@@ -8,13 +8,15 @@ const upload=require("./middleware/upload.middleware.js");
 const {signUp,signIn}=require("./User/user.controller.js");
 const userModel = require("./User/user.schema.js");
 const fetchUser=require("./middleware/fetchUser.js");
-
+const likeController = require("./liked/like.controllers.js");
+const rrController=require("./RatingReview/ratingReviews.controllers.js");
+var cookieParser = require('cookie-parser')
+app.use(cookieParser());
 app.use(express.json());
 app.use(cors());
 
 //connect to mongodb
 mongoose.connect("mongodb+srv://sk9088075:070707@cluster1.w55zw.mongodb.net/path");
-
 
 //create route for image upload
 app.use('/images',express.static('upload/images'));
@@ -29,6 +31,16 @@ app.post('/upload',upload.single('product'),(req,res)=>{
 //create endpoint for user
 app.post('/signup',(req,res)=>{signUp(req,res);});
 app.post('/login',(req,res)=>{signIn(req,res);});
+
+//like endpoint
+app.post('/like/:productId',fetchUser,likeController.addLike);
+app.get('/liked',fetchUser,likeController.getLiked);
+
+//rating and reviews endpoin
+app.post('/rate/:productId',fetchUser,rrController.rateProduct);
+app.get('/avg-rating/:productId',rrController.getRating);
+app.post('/review/:productId',fetchUser,rrController.reviewProduct);
+app.get('/all-reviews/:productId',rrController.getAllReviews);
 
 //create endpoint for product
 const productController=new ProductController();

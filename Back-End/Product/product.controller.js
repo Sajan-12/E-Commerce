@@ -35,15 +35,15 @@ class ProductController{
 
        async getAllProducts(req,res){
 
-        let products=await productModel.find({});
+        let products=await productModel.find({}).populate("ratings");
         res.json({success:true,products:products}); 
 
        }
 
        async getOneProduct(req,res){
-        let id=req.params.id;
-        let product=await productModel.find({id:Number(id)});
-        if(product.length==0){
+        let {id}=req.params;
+        let product=await productModel.findOne({id:Number(id)}).populate("ratings");
+        if(!product){
           res.send("product not found");
         }
         else {

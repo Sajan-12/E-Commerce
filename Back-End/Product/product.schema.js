@@ -1,6 +1,6 @@
 const mongoose= require("mongoose");
 
-const product=new mongoose.Schema({
+const productSchema=new mongoose.Schema({
     id:{
         type:Number,
         required:true
@@ -25,6 +25,14 @@ const product=new mongoose.Schema({
         type:Number,
         required:true
     },
+    ratings:[{
+      type:mongoose.Schema.Types.ObjectId,
+       ref:'RatingReview'
+    }],
+    reviews:[{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'RatingReview'
+    }],
     date:{
         type:Date,
         default:Date.now()
@@ -34,5 +42,5 @@ const product=new mongoose.Schema({
        default: true
     }
 })
-const productModel=new mongoose.model('Product',product);
+const productModel=mongoose.model('Product',productSchema);
 module.exports=productModel;
