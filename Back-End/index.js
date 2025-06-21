@@ -8,19 +8,13 @@ const upload=require("./middleware/upload.middleware.js");
 const {signUp,signIn}=require("./User/user.controller.js");
 const userModel = require("./User/user.schema.js");
 const fetchUser=require("./middleware/fetchUser.js");
-const likeController = require("./liked/like.controllers.js");
-const rrController=require("./RatingReview/ratingReviews.controllers.js");
-var cookieParser = require('cookie-parser')
-app.use(cookieParser());
-app.use(express.json());
 
-app.use(cors({
-   origin: 'http://localhost:3000',
-   credentials: true,
-   methods: ['GET', 'POST', 'PUT', 'DELETE']
-}));
+app.use(express.json());
+app.use(cors());
+
 //connect to mongodb
 mongoose.connect("mongodb+srv://sk9088075:070707@cluster1.w55zw.mongodb.net/path");
+
 
 //create route for image upload
 app.use('/images',express.static('upload/images'));
@@ -28,23 +22,13 @@ app.use('/images',express.static('upload/images'));
 app.post('/upload',upload.single('product'),(req,res)=>{
     res.json({
         success:"true",
-        image_url:`https://e-commerce-8waw.onrender.com/images/${req.file.filename}`
+        image_url:`http://localhost:${port}/images/${req.file.filename}`
     })
 })
 
 //create endpoint for user
 app.post('/signup',(req,res)=>{signUp(req,res);});
 app.post('/login',(req,res)=>{signIn(req,res);});
-
-//like endpoint
-app.post('/like/:productId',fetchUser,likeController.addLike);
-app.get('/liked',fetchUser,likeController.getLiked);
-
-//rating and reviews endpoin
-app.post('/rate/:productId',fetchUser,rrController.rateProduct);
-app.get('/avg-rating/:productId',rrController.getRating);
-app.post('/review/:productId',fetchUser,rrController.reviewProduct);
-app.get('/all-reviews/:productId',rrController.getAllReviews);
 
 //create endpoint for product
 const productController=new ProductController();
@@ -63,31 +47,29 @@ app.get('/popularinwomen',(req,res)=>{productController.popularInWomen(req,res)}
 app.get('/relatedproduct/:id',(req,res)=>{productController.relatedProduct(req,res)});
 //create api for addtocart
 
-app.put('/addtocart/:id',fetchUser,async(req,res)=>{
-
+app.post('/addtocart',fetchUser,async(req,res)=>{
    let userData=await userModel.findOne({_id:req.userId});
-       userData.cartData[req.params.id]+=1;
+       userData.cartData[req.body.itemId]+=1;
      await userModel.findOneAndUpdate({_id:req.userId},{ cartData:userData.cartData});
-     res.status(202).json({msg:"item is added"});
+     res.send("item is added");
 })
 
 //create api for removefromcart
-app.put('/removefromcart/:id',fetchUser,async(req,res)=>{
-    
+app.post('/removefromcart',fetchUser,async(req,res)=>{
     let userData=await userModel.findOne({_id:req.userId});
-        if(userData.cartData[req.params.id]>0)
-        userData.cartData[req.params.id]-=1;
+        if(userData.cartData[req.body.itemId]>0)
+        userData.cartData[req.body.itemId]-=1;
       await userModel.findOneAndUpdate({_id:req.userId},{ cartData:userData.cartData});
-      res.status(202).json({msg:"item is removed"});
+      res.send("item is removed");
  })
 
  //create api for getCart item
- app.get('/getcartitems',fetchUser,async(req,res)=>{
+ app.post('/getcartitem',fetchUser,async(req,res)=>{
     let userData=await userModel.findOne({_id:req.userId});
     if(userData){
-        return res.status(200).json({cartData:userData.cartData});
+        return res.json(userData.cartData);
     }
-    return res.status(200).json({msg:"cart is empty"});
+
  })
 
 //default api 
