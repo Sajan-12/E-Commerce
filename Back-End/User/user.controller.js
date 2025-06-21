@@ -24,7 +24,7 @@ const signUp=async(req,res)=>{
 
 const cookieoptions = {
     httpOnly: true,
-    secure: false,
+    secure: true,
     maxAge: 24*3600000 
 };
 

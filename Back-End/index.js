@@ -85,7 +85,7 @@ app.put('/removefromcart/:id',fetchUser,async(req,res)=>{
  app.get('/getcartitems',fetchUser,async(req,res)=>{
     let userData=await userModel.findOne({_id:req.userId});
     if(userData){
-        return res.status(200).json(userData.cartData);
+        return res.status(200).json({cartData:userData.cartData});
     }
     return res.status(200).json({msg:"cart is empty"});
  })
