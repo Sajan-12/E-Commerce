@@ -63,29 +63,31 @@ app.get('/popularinwomen',(req,res)=>{productController.popularInWomen(req,res)}
 app.get('/relatedproduct/:id',(req,res)=>{productController.relatedProduct(req,res)});
 //create api for addtocart
 
-app.post('/addtocart',fetchUser,async(req,res)=>{
+app.put('/addtocart/:id',fetchUser,async(req,res)=>{
+
    let userData=await userModel.findOne({_id:req.userId});
-       userData.cartData[req.body.itemId]+=1;
+       userData.cartData[req.params.id]+=1;
      await userModel.findOneAndUpdate({_id:req.userId},{ cartData:userData.cartData});
-     res.send("item is added");
+     res.status(202).json({msg:"item is added"});
 })
 
 //create api for removefromcart
-app.post('/removefromcart',fetchUser,async(req,res)=>{
+app.put('/removefromcart/:id',fetchUser,async(req,res)=>{
+    
     let userData=await userModel.findOne({_id:req.userId});
-        if(userData.cartData[req.body.itemId]>0)
-        userData.cartData[req.body.itemId]-=1;
+        if(userData.cartData[req.params.id]>0)
+        userData.cartData[req.params.id]-=1;
       await userModel.findOneAndUpdate({_id:req.userId},{ cartData:userData.cartData});
-      res.send("item is removed");
+      res.status(202).json({msg:"item is removed"});
  })
 
  //create api for getCart item
- app.post('/getcartitem',fetchUser,async(req,res)=>{
+ app.get('/getcartitems',fetchUser,async(req,res)=>{
     let userData=await userModel.findOne({_id:req.userId});
     if(userData){
-        return res.json(userData.cartData);
+        return res.status(200).json(userData.cartData);
     }
-
+    return res.status(200).json({msg:"cart is empty"});
  })
 
 //default api 
