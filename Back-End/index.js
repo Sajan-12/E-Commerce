@@ -9,6 +9,8 @@ const {signUp,signIn}=require("./User/user.controller.js");
 const userModel = require("./User/user.schema.js");
 const fetchUser=require("./middleware/fetchUser.js");
 
+const likeController=require('./liked/like.controllers.js');
+const rrController=require('./RatingReview/ratingReviews.controllers.js');
 app.use(express.json());
 app.use(cors());
 
