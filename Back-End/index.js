@@ -30,6 +30,16 @@ app.post('/upload',upload.single('product'),(req,res)=>{
 app.post('/signup',(req,res)=>{signUp(req,res);});
 app.post('/login',(req,res)=>{signIn(req,res);});
 
+//like endpoint
+app.post('/like/:productId',fetchUser,likeController.addLike);
+app.get('/liked',fetchUser,likeController.getLiked);
+
+//rating and reviews endpoin
+app.post('/rate/:productId',fetchUser,rrController.rateProduct);
+app.get('/avg-rating/:productId',rrController.getRating);
+app.post('/review/:productId',fetchUser,rrController.reviewProduct);
+app.get('/all-reviews/:productId',rrController.getAllReviews);
+
 //create endpoint for product
 const productController=new ProductController();
 app.post('/addproduct',(req,res)=>{productController.addProduct(req,res)});
