@@ -13,11 +13,11 @@ const rrController=require("./RatingReview/ratingReviews.controllers.js");
 var cookieParser = require('cookie-parser')
 app.use(cookieParser());
 app.use(express.json());
-app.use(cors());
 
 app.use(cors({
-   origin: 'http://localhost:3000', // or your frontend URL
-   credentials: true // ⬅️ critical!
+   origin: 'http://localhost:3000',
+   credentials: true,
+   methods: ['GET', 'POST', 'PUT', 'DELETE']
 }));
 //connect to mongodb
 mongoose.connect("mongodb+srv://sk9088075:070707@cluster1.w55zw.mongodb.net/path");
