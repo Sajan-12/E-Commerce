@@ -24,8 +24,9 @@ const signUp=async(req,res)=>{
 
 const cookieoptions = {
     httpOnly: true,
-    secure: true,
-    maxAge: 24*3600000 
+    secure: true,           
+    sameSite: 'None',       
+    maxAge: 24 * 3600000    
 };
 
 const signIn=async(req,res)=>{
@@ -41,7 +42,7 @@ const signIn=async(req,res)=>{
     
     const token=jwt.sign({
         userId:user._id,
-    },'secret_ecom',{ expiresIn: '3h'});
+    },'secret_ecom',{ expiresIn: '1d'});
       res.cookie('token', token, cookieoptions);
       res.json({success:true,token});
 
