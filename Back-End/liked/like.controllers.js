@@ -29,7 +29,24 @@ exports.addLike = async (req, res) => {
     }
 
 }
-
+exports.getLikedOne=async(req,res)=>{
+    try{
+    const {productId}=req.params;
+        const userLike = await likeModel.findOne({
+            user: req.userId,
+            product: productId
+        });
+        if(userLike){
+            let msg = userLike.likeStatus === true ? "Liked" : "unLiked";
+            return res.status(200).json({ msg: msg });
+        }
+        else 
+        return res.status(200).json({ msg:""});
+    }
+    catch(err){
+             res.status(404).json({ msg: "server error" });
+    }
+}
 exports.getLiked=async(req,res)=>{
     try{
          const userLikes=await likeModel.find({

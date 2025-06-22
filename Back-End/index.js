@@ -39,6 +39,7 @@ app.post('/login',(req,res)=>{signIn(req,res);});
 //like endpoint
 app.post('/like/:productId',fetchUser,likeController.addLike);
 app.get('/liked',fetchUser,likeController.getLiked);
+app.get('/liked/:productId',fetchUser,likeController.getLikedOne);
 
 //rating and reviews endpoin
 app.post('/rate/:productId',fetchUser,rrController.rateProduct);
