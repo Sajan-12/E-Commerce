@@ -67,7 +67,7 @@ app.post('/addtocart',fetchUser,async(req,res)=>{
    let userData=await userModel.findOne({_id:req.userId});
        userData.cartData[req.body.itemId]+=1;
      await userModel.findOneAndUpdate({_id:req.userId},{ cartData:userData.cartData});
-     res.send("item is added");
+     res.status(202).json({msg:"item is added"});
 })
 
 //create api for removefromcart
@@ -76,16 +76,16 @@ app.post('/removefromcart',fetchUser,async(req,res)=>{
         if(userData.cartData[req.body.itemId]>0)
         userData.cartData[req.body.itemId]-=1;
       await userModel.findOneAndUpdate({_id:req.userId},{ cartData:userData.cartData});
-      res.send("item is removed");
+       res.status(202).json({msg:"item is removed"});
  })
 
  //create api for getCart item
- app.post('/getcartitem',fetchUser,async(req,res)=>{
+ app.get('/getcartitems',fetchUser,async(req,res)=>{
     let userData=await userModel.findOne({_id:req.userId});
     if(userData){
-        return res.json(userData.cartData);
+        return  res.status(200).json({cartData:userData.cartData});
     }
-
+     return res.status(200).json({msg:"cart is empty"});
  })
 
 //default api 
