@@ -3,6 +3,7 @@ const express=require("express");
 const app=express();
 const mongoose=require("mongoose");
 const cors=require("cors");
+
 const ProductController=require("./Product/product.controller.js");
 const upload=require("./middleware/upload.middleware.js");
 const {signUp,signIn}=require("./User/user.controller.js");
@@ -12,7 +13,10 @@ const fetchUser=require("./middleware/fetchUser.js");
 const likeController=require('./liked/like.controllers.js');
 const rrController=require('./RatingReview/ratingReviews.controllers.js');
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: ['http://localhost:3000', 'https://my-e-commerce-app-rmhu.onrender.com'], // allow localhost + deployed frontend
+  credentials: true
+}));
 
 //connect to mongodb
 mongoose.connect("mongodb+srv://sk9088075:070707@cluster1.w55zw.mongodb.net/path");
