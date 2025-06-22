@@ -1,6 +1,6 @@
 const userModel=require("./user.schema.js");
 const jwt=require("jsonwebtoken");
-
+const bcrypt=require('bcryptjs');
 const signUp=async(req,res)=>{
 
     const {name,email,password}=req.body;
