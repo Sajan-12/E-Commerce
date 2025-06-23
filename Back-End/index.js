@@ -42,9 +42,8 @@ app.get('/liked',fetchUser,likeController.getLiked);
 app.get('/liked/:productId',fetchUser,likeController.getLikedOne);
 
 //rating and reviews endpoin
-app.post('/rate/:productId',fetchUser,rrController.rateProduct);
+app.post('/rating-review/:productId',fetchUser,rrController.rateReviewProduct);
 app.get('/avg-rating/:productId',rrController.getRating);
-app.post('/review/:productId',fetchUser,rrController.reviewProduct);
 app.get('/all-reviews/:productId',rrController.getAllReviews);
 
 //create endpoint for product

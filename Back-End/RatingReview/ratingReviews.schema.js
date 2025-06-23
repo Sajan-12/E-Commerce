@@ -11,7 +11,10 @@ const mongoose=require('mongoose');
         required:true
     },
     rating:{
-        type:Number
+        type:Number,
+        min:1,
+        max:5,
+        required:true
     },
     review:{
        type:String

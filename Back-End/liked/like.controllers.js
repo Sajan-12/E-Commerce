@@ -11,9 +11,9 @@ exports.addLike = async (req, res) => {
             product: productId
         });
         if (userLike) {
-            userLike.likeStatus = !userLike.likeStatus;
+            userLike.likeStatus=!userLike.likeStatus;
             await userLike.save();
-            let msg = userLike.likeStatus === true ? "Liked" : "unLiked";
+            let msg = userLike.likeStatus===true ? "Liked" : "unLiked";
             return res.status(202).json({ msg: msg });
         }
         const newUser = new likeModel({
