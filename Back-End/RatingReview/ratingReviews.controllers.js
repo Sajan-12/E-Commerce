@@ -32,13 +32,14 @@ exports.rateReviewProduct=async(req,res)=>{
     user:req.userId,
     product:productId,
     rating:parseFloat(rating),
-    review:review
    })
     await newRate.save();
     product.ratings.push(newRate._id);
-    if (review && review.trim() !== "")
-    product.reviews.push(newRate._id);
-        await product.save();
+    if (review && review.trim() !== ""){
+      newRate.review=review;
+      product.reviews.push(newRate._id);
+    }
+    await product.save();
     return res.status(202).json({msg:"success"});
    }
    catch(err){
@@ -78,8 +79,9 @@ exports.getAllReviews=async(req,res)=>{
      reviewsOfProduct.map((doc)=>{
          allReviews.push(doc.review);
      })
+     let noOfReview=allReviews.length;
      allReviews = [...new Set(allReviews)];
-     res.status(200).json({reviews:allReviews})
+     res.status(200).json({reviews:allReviews,noOfReview:noOfReview})
     }
     catch(err){
     console.log(err);
