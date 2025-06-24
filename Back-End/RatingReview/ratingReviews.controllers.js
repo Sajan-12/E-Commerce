@@ -33,12 +33,12 @@ exports.rateReviewProduct=async(req,res)=>{
     product:productId,
     rating:parseFloat(rating),
    })
-    await newRate.save();
-    product.ratings.push(newRate._id);
-    if (review && review.trim() !== ""){
+   if (review && review.trim() !== ""){
       newRate.review=review;
       product.reviews.push(newRate._id);
     }
+     product.ratings.push(newRate._id);
+    await newRate.save();
     await product.save();
     return res.status(202).json({msg:"success"});
    }
