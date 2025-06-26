@@ -70,7 +70,7 @@ class ProductController{
           console.log(product);
           let allRelatedProuducts=await productModel.find({category:product[0].category});
           let relatedProducts=allRelatedProuducts.slice(0,4);
-          res.json(relatedProducts);
+          res.send(relatedProducts);
         }
     
 }
