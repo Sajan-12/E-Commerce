@@ -14,7 +14,8 @@ const likeController=require('./liked/like.controllers.js');
 const rrController=require('./RatingReview/ratingReviews.controllers.js');
 app.use(express.json());
 app.use(cors({
-  origin: ['http://localhost:3000', 'https://my-e-commerce-app-rmhu.onrender.com','https://e-commerce-admin-lsxi.onrender.com'], // allow localhost + deployed frontend
+  origin: ['http://localhost:3000', 'https://my-e-commerce-app-rmhu.onrender.com',
+    'https://e-commerce-admin-lsxi.onrender.com'], // allow localhost + deployed frontend
   credentials: true
 }));
 
@@ -25,12 +26,13 @@ mongoose.connect("mongodb+srv://sk9088075:070707@cluster1.w55zw.mongodb.net/path
 //create route for image upload
 app.use('/images',express.static('upload/images'));
 
-app.post('/upload',upload.single('product'),(req,res)=>{
-    res.json({
-        success:true,
-        image_url:`http://localhost:${port}/images/${req.file.filename}`
-    })
-})
+app.post('/upload', upload.single('product'), (req, res) => {
+  const fileUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
+  res.json({
+    success: true,
+    image_url: fileUrl
+  });
+});
 
 //create endpoint for user
 app.post('/signup',(req,res)=>{signUp(req,res);});
